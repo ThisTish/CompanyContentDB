@@ -1,18 +1,6 @@
 const inquirer = require("inquirer");
 const { startingPoint, addDepartment, addEmployee, addRole, updateRole } = require('./prompts');
-const { Pool } = require('pg');
 
-const pool = new Pool(
-    {
-        user: 'postgres',
-        password: '1086721La',
-        host: 'localhost',
-        database: 'company_db'
-    },
-    console.log('Connected to the Comapny Database')
-);
-// todo figure out how to connect to pool without exiting prompt function.
-// const client = pool.connect();
 
 // switch and case for startingPoint
 function chooseAction(choice) {

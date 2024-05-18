@@ -10,44 +10,43 @@ LEFT JOIN departments AS d
 ON r.department_id = d.id;
 
 -- view all employees
-SELECT e.id, e.first_name, e.last_name, r.title, r.salary
+SELECT e.id, e.first_name, e.last_name, r.title AS title, d.name AS department, r.salary AS salary, m.first_name ||' '|| m.last_name AS manager
 FROM employees AS e
-LEFT JOIN roles as r
-ON e.role_id = r.id;
-
-SELECT e.id, e.first_name, e.last_name, m.first_name AS manager_fn, m.last_name AS manager_ln
-FROM employees AS e
-INNER JOIN employees as m
-ON e.manager_id = m.id
-ORDER BY e.id;
--- ?subquery of roles matching departments?
+JOIN roles AS r on e.role_id = r.id
+JOIN departments AS d on r.department_id = d.id
+LEFT JOIN employees AS m ON e.manager_id = m.id;
 
 -- add a department
--- INSERT INTO departments(name)
--- VALUES ($1);
+INSERT INTO departments (name) VALUES ('Supplier');
 
 -- add a role
--- INSERT INTO roles(title, salary, department_id)
--- VALUES ($1, $2, $3);
+INSERT INTO roles (title, salary, department_id)
+VALUES ('Drifter', 100, 4);
 
--- add an employee
--- INSERT INTO employees(first_name, last_name, role_id, manager_id)
--- VALUES ($1, $2, $3, $4);
+-- -- add an employee
+INSERT INTO employees(first_name, last_name, role_id, manager_id)
+VALUES ('Bob', 'Fossil', 3, 1);
 
 -- update employee role
--- UPDATE employees SET role_id = $1 WHERE id = $2
+UPDATE employees SET role_id = 4 WHERE id = 4;
 
 
 --* bonuses
 -- update employee manager
--- UPDATE employees SET manager_id = $1 WHERE id = $2
+UPDATE employees SET manager_id = 3 WHERE role_id = 4;
+
 -- view employees by manager
--- SELECT * FROM employees WHERE manager_id = 2
--- view employees by department
--- SELECT * FROM employees WHERE department_id = 2
--- delete departments, roles and employees
+SELECT first_name ||' '|| last_name AS Employee
+FROM employees
+WHERE manager_id = 1;
+
+-- -- view employees by department
+SELECT e.first_name ||' '|| e.last_name AS employee, d.name AS department
+FROM employees AS e
+JOIN roles AS r ON e.role_id = r.id
+INNER JOIN departments AS d ON r.department_id = d.id;
 
 -- view the total salary in each department
--- SELECT SUM(salary) FROM roles;--almost not there yet
+SELECT SUM(salary) FROM roles;
 
 

@@ -94,5 +94,5 @@ const startingPoint = [
 // 	}
 // ]
 
-module.exports = { startingPoint,  }
+module.exports = { startingPoint  }
 // addDepartment, addEmployee, addRole, updateRole

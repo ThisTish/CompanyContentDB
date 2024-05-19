@@ -23,8 +23,7 @@ async function chooseAction(choice) {
     console.log(`Choice:${choice}`)
     switch (choice) {
         case 'View all departments':
-            const departments = await connectedDB.getDepartments()
-            console.log(`All departments:${(departments)}`)
+            await connectedDB.getDepartments()
             break;
         // case 'View all roles':
         //     // todo SELECT * FROM roles--(role, id, dep., salary)

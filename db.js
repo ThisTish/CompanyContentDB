@@ -48,12 +48,39 @@ class CompanyDB{
 		console.log('Error in creating table!', err);
 		}
 	}
-
-		// function addADepartment(){
-		// 	return this.query(`INSERT INTO departments(name)
-		// 	VALUES ($1);`)
-		// }
-
+		async addADepartment(input){
+			console.log(input)
+			try{
+			await this.pool.query(`INSERT INTO departments(name)
+			VALUES ($1);`, [input.department])
+			console.log('Success! Department added!')
+			}
+			catch(err){
+				console.log('Error trying to add department.', err)
+			}
+		}
+		async addARole(input){
+			console.log(input)
+			try{
+			await this.pool.query(`INSERT INTO roles (title, salary, department_id)
+			VALUES ($1, $2, $3);`, [input.title, input.salary, input.department])
+			console.log('Success! Role added!')
+			}
+			catch(err){
+				console.log('Error trying to add department.', err)
+			}
+		}
+		async addADepartment(input){
+			console.log(input)
+			try{
+			await this.pool.query(`INSERT INTO departments(name)
+			VALUES ($1);`, [input.department])
+			console.log('Success! Department added!')
+			}
+			catch(err){
+				console.log('Error trying to add department.', err)
+			}
+		}
 
 		// *Bonuses
 		// todo add to prompts & s/c

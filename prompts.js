@@ -10,41 +10,41 @@ const startingPoint = [
 ];
 
 // // adding prompts section
-// const addDepartment = [{
-// 	name: 'department',
-// 	message: 'Name of new department:',
-// 	type: 'input',
-// 	validate: async(input) =>{
-// 		return input ?  true : error('Please enter a new department.')
-// 		}
-// 	}
-// ];
+const addDepartment = [{
+	name: 'department',
+	message: 'Name of new department:',
+	type: 'input',
+	validate: async(input) =>{
+		return input ?  true : error('Please enter a new department.')
+		}
+	}
+];
 
-// const addRole = [
-// 	{
-// 	name: 'name',
-// 	message: 'Name of new role:',
-// 	type: 'input',
-// 	validate: async(input) =>{
-// 		return input ?  true : error('Please enter a new role.')
-// 		}
-// 	},
-// 	{
-// 	name: 'salary',
-// 	message: 'Salary:',
-// 	type: 'input',
-// 	validate: async(input) =>{
-// 		return input ?  true : error('Please enter an amout.')
-// 		}
-// 	},
-// 	{
-// 	name: 'department',
-// 	message: 'Department:',
-// 	type: 'input',
-// 	choices: [retrieveDepartments()]
-// 	}
-// ];
-
+const addRole = [
+	{
+	name: 'name',
+	message: 'Name of new role:',
+	type: 'input',
+	validate: async(input) =>{
+		return input ?  true : error('Please enter a new role.')
+		}
+	},
+	{
+	name: 'salary',
+	message: 'Salary:',
+	type: 'input',
+	validate: async(input) =>{
+		return input ?  true : error('Please enter an amout.')
+		}
+	},
+	{
+	name: 'department',
+	message: 'Department:',
+	type: 'input',
+	choices: [retrieveDepartments()]
+	}
+];
+// todo retrieveDepartments() by getDepartments, but fill in answer.rows as choices.
 // const addEmployee = [
 // 	{
 // 	name: 'firstName',
@@ -94,5 +94,5 @@ const startingPoint = [
 // 	}
 // ]
 
-module.exports = { startingPoint  }
-// addDepartment, addEmployee, addRole, updateRole
+module.exports = { startingPoint, addDepartment  }
+// , addEmployee, addRole, updateRole

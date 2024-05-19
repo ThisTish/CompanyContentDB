@@ -1,5 +1,5 @@
 const inquirer = require("inquirer");
-const { startingPoint } = require('./prompts');
+const { startingPoint, addDepartment } = require('./prompts');
 // , addDepartment, addEmployee, addRole, updateRole
 const CompanyDB = require("./db");
 
@@ -33,16 +33,16 @@ async function chooseAction(choice) {
             await connectedDB.getEmployees()
             break;
 
-        // case 'Add a department':
-		// 	inquirer.prompt(addDepartment).then((dep) =>{
-        //     // todo INSERT INTO departments(department_name)VALUES(prompt.department)
-		// 	});
-        //     break;
+        case 'Add a department':
+			inquirer.prompt(addDepartment).then((dep) => connectedDB.addADepartment(dep)
+			);
+            break;
         // case 'Add a role':
 		// 	inquirer.prompt(addRole).then((role) =>{
         //     // todo INSERT INTO roles(name, salary, department)VALUES(prompt.role_name, prompt.salary, prompt.department(s/c w/dep. id?))
 		// 	});
 		// 	break;
+
         // case 'Add an employee':
 		// 	const{ firstName, lastName, role, manager} = employee;
 		// 	inquirer.prompt(addEmployee).then((emp) =>{
@@ -60,13 +60,14 @@ async function chooseAction(choice) {
         default:
             console.log('Invalid choice');
     };
+    // choice !== 'Quit' ? init() : pool.end();
 };
 
 
 async function init() {
     try {
         const answer = await inquirer.prompt(startingPoint);
-        await chooseAction(answer.action, connectedDB); // Pass the instance of CompanyDB
+        await chooseAction(answer.action, connectedDB);
     } catch (error) {
         console.error('Error during initialization:', error);
     }

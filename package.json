@@ -9,6 +9,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "cli-table3": "^0.6.5",
     "git-filter-repo": "^0.0.30",
     "inquirer": "^8.2.4",
     "pg": "^8.11.5"

@@ -1,6 +1,7 @@
+const Table = require('cli-table3');
+const createTable = require('./helper');
 
-
-
+const table = new Table()
 class CompanyDB{
 	constructor(pool){
 		this.pool = pool;
@@ -8,8 +9,8 @@ class CompanyDB{
 	async query(sql, input) {
 		try{
 			const selected = await this.pool.query(sql, input);
-			console.log(`Query returned ${selected}`);
-			console.log( selected.rows);
+			createTable(selected.rows);
+			// console.log(table.toString());
 			return JSON.stringify(selected.rows);
 		}catch (err){
 			console.log('Error during query', err);
@@ -19,6 +20,7 @@ class CompanyDB{
 		getDepartments(){
 			return this.query('SELECT * FROM departments;');
 		}
+		
 		// // todo need to alter with a join.
 		// function getRoles(){
 		// 	return this.query('SELECT * FROM roles');

@@ -10,7 +10,7 @@ class CompanyDB{
 			const selected = await this.pool.query(sql, input);
 			console.log(`Query returned ${selected}`);
 			console.log( selected.rows);
-			return selected.rows;
+			return JSON.stringify(selected.rows);
 		}catch (err){
 			console.log('Error during query', err);
 			throw err;

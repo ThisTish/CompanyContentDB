@@ -25,12 +25,14 @@ async function chooseAction(choice) {
         case 'View all departments':
             await connectedDB.getDepartments()
             break;
-        // case 'View all roles':
-        //     // todo SELECT * FROM roles--(role, id, dep., salary)
-        //     break;
-        // case 'View all employees':
-        //     // todo SELECT * FROM employees--(id, firstname, lastname, role, dep., salary, manager)join tables
-        //     break;
+        case 'View all roles':
+            await connectedDB.getRoles()
+            break;
+            
+        case 'View all employees':
+            await connectedDB.getEmployees()
+            break;
+
         // case 'Add a department':
 		// 	inquirer.prompt(addDepartment).then((dep) =>{
         //     // todo INSERT INTO departments(department_name)VALUES(prompt.department)

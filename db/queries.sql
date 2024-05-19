@@ -40,7 +40,7 @@ UPDATE employees SET role_id = 3 WHERE id = 3;
 UPDATE employees SET manager_id = 1 WHERE role_id = 3;
 
 -- view employees by manager
-SELECT first_name ||' '|| last_name AS Employee
+SELECT e.first_name ||' '|| e.last_name AS Employee
 FROM employees
 WHERE manager_id = 1;
 
@@ -51,6 +51,8 @@ JOIN roles AS r ON e.role_id = r.id
 INNER JOIN departments AS d ON r.department_id = d.id;
 
 -- view the total salary in each department
-SELECT SUM(salary) FROM roles;
-
+SELECT SUM(r.salary), d.name
+FROM roles AS r 
+LEFT JOIN departments AS d 
+ON r.department_id = d.id;
 

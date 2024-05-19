@@ -12,8 +12,8 @@ CREATE TABLE departments(
 CREATE TABLE roles(
 	id SERIAL  PRIMARY KEY,
 	title VARCHAR(30) UNIQUE NOT NULL,
-	salary DECIMAL NOT NULL,
 	department_id INT NOT NULL,
+	salary DECIMAL NOT NULL,
 	FOREIGN KEY (department_id) REFERENCES departments(id)
 );
 

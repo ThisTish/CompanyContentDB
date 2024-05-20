@@ -7,7 +7,6 @@ class selectTable{
 	}
 	
 	createTable(){
-		console.log(this.col)
 		if(this.data.length === 0){
 			console.log('None to show');
 			return;
@@ -24,4 +23,11 @@ class selectTable{
 }
 
 }
-module.exports = selectTable
+// ! other part of list making
+async function listSelected(choices) {
+	const choicesArray = await choices.rows.map(row => row.name)
+	console.log(`ChoicesArray: ${choicesArray}`);
+	return choicesArray;
+}
+
+module.exports = selectTable, listSelected

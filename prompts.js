@@ -1,4 +1,6 @@
 const inquirer = require("inquirer");
+const CompanyDB = require("./db");
+const db = new CompanyDB
 // prompt to start out making a selection
 const startingPoint = [
 	{
@@ -37,44 +39,58 @@ const addRole = [
 		return input ?  true : error('Please enter an amout.')
 		}
 	},
-	{
+	// ! How to fill choices with list of departments
+// 	{
+// 	name: 'department',
+// 	message: 'Department:',
+// 	type: 'list',
+// 	choices: db.listDept()
+// }
+{
 	name: 'department',
 	message: 'Department:',
 	type: 'input',
-	choices: [retrieveDepartments()]
+	validate: async(input) =>{
+		return input ?  true : error('Please enter an amout.')
+		}
+}
+];
+const addEmployee = [
+	{
+	name: 'firstName',
+	message: "Employee's first name:",
+	type: 'input',
+	validate: async(input) =>{
+		return input ?  true : error('Please enter a first name.')
+		}
+	},
+	{
+	name: 'lastName',
+	message: "Employee's last name:",
+	type: 'input',
+	validate: async(input) =>{
+		return input ?  true : error('Please enter a last name.')
+		}
+	},
+	{
+	name: 'role',
+	message: "Employee's role:",
+	type: 'input',
+	// choices: [retrieveRoles()]
+	validate: async(input) =>{
+		return input ?  true : error('Please enter a last name.')
+		}
+	},
+	{
+	name: 'manager',
+	message: "Employee's direct manager:",
+	type: 'input',
+	// choices: [retrieveManagers()]
+	validate: async(input) =>{
+		return input ?  true : error('Please enter a last name.')
+		}
 	}
 ];
-// todo retrieveDepartments() by getDepartments, but fill in answer.rows as choices.
-// const addEmployee = [
-// 	{
-// 	name: 'firstName',
-// 	message: "Employee's first name:",
-// 	type: 'input',
-// 	validate: async(input) =>{
-// 		return input ?  true : error('Please enter a first name.')
-// 		}
-// 	},
-// 	{
-// 	name: 'lastName',
-// 	message: "Employee's last name:",
-// 	type: 'input',
-// 	validate: async(input) =>{
-// 		return input ?  true : error('Please enter a last name.')
-// 		}
-// 	},
-// 	{
-// 	name: 'role',
-// 	message: "Employee's role:",
-// 	type: 'input',
-// 	choices: [retrieveRoles()]
-// 	},
-// 	{
-// 	name: 'manager',
-// 	message: "Manager:",
-// 	type: 'input',
-// 	choices: [retrieveManagers()]
-// 	}
-// ];
 
 // // updating prompt section
 // const updateRole = [
@@ -94,5 +110,5 @@ const addRole = [
 // 	}
 // ]
 
-module.exports = { startingPoint, addDepartment  }
-// , addEmployee, addRole, updateRole
+module.exports = { startingPoint, addDepartment, addRole, addEmployee }
+// , , addRole, updateRole

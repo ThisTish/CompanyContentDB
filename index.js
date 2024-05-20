@@ -1,6 +1,6 @@
 const inquirer = require("inquirer");
-const { startingPoint, addDepartment } = require('./prompts');
-// , addDepartment, addEmployee, addRole, updateRole
+const { startingPoint, addDepartment, addRole, addEmployee } = require('./prompts');
+//  updateRole
 const CompanyDB = require("./db");
 
 const { Pool } = require('pg');
@@ -34,19 +34,15 @@ async function chooseAction(choice) {
             break;
 
         case 'Add a department':
-			inquirer.prompt(addDepartment).then((dep) => connectedDB.addADepartment(dep)
-			);
+			inquirer.prompt(addDepartment).then((dep) => connectedDB.addADepartment(dep));
             break;
-        // case 'Add a role':
-		// 	inquirer.prompt(addRole).then((role) =>{
-        //     // todo INSERT INTO roles(name, salary, department)VALUES(prompt.role_name, prompt.salary, prompt.department(s/c w/dep. id?))
-		// 	});
-		// 	break;
+        case 'Add a role':
+			inquirer.prompt(addRole).then((role) => connectedDB.addARole(role));
+			break;
 
         // case 'Add an employee':
 		// 	const{ firstName, lastName, role, manager} = employee;
 		// 	inquirer.prompt(addEmployee).then((emp) =>{
-        //     // todo INSERT INTO employees(first_name, last_name, role, manager)
 		// 	});
 		// 	break;
         // case 'Update employee role':

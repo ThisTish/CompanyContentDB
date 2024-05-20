@@ -1,6 +1,7 @@
 // const Table = require('cli-table3');
 
 const selectTable = require("./helpers");
+const listSelected = require('./helpers');
 
 class CompanyDB{
 	constructor(pool){
@@ -70,16 +71,22 @@ class CompanyDB{
 				console.log('Error trying to add department.', err)
 			}
 		}
-		async addADepartment(input){
-			console.log(input)
-			try{
-			await this.pool.query(`INSERT INTO departments(name)
-			VALUES ($1);`, [input.department])
-			console.log('Success! Department added!')
-			}
-			catch(err){
-				console.log('Error trying to add department.', err)
-			}
+		// ! how to input dept id, by selecting department name???
+		// async addAnEmployee(input){
+		// 	console.log(input)
+		// 	try{
+		// 	await this.pool.query(`INSERT INTO employees(first_name, last_name, ..)
+		// 	VALUES ($1);`, [input.department])
+		// 	console.log('Success! Department added!')
+		// 	}
+		// 	catch(err){
+		// 		console.log('Error trying to add department.', err)
+		// 	}
+		// }
+// !one part of list making
+		async listDept(){
+			const selected = await this.pool.query(`SELECT * FROM departments;`);
+			listSelected(selected);
 		}
 
 		// *Bonuses

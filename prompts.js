@@ -98,23 +98,23 @@ const addEmployee = [
 	}
 ];
 
-// // updating prompt section
-// const updateRole = [
-// 	{
-// 		name: 'employee',
-// 		message:"Employee:",
-// 		type: 'list',
-// 		choices: [retrieveEmployees()]
-// 	},
-// 	{
-// 		name:'new_role',
-// 		message: "Employee's role:",
-// 		type: 'input',
-// 		validate: async(input) =>{
-// 			return input ? true : error('Please select a new role.')
-// 		}
-// 	}
-// ]
+// updating prompt section
+const updateRole = [
+	{
+		name: 'employeeId',
+		message:"Employee:",
+		type: 'input',
+		// choices: [retrieveEmployees()]
+	},
+	{
+		name:'new_role',
+		message: "Employee's role:",
+		type: 'input',
+		validate: async(input) =>{
+			return input ? true : error('Please select a new role.')
+		}
+	}
+]
 
-module.exports = { startingPoint, addDepartment, addRole, addEmployee }
+module.exports = { startingPoint, addDepartment, addRole, addEmployee, updateRole }
 // , , addRole, updateRole

@@ -1,5 +1,5 @@
 const inquirer = require("inquirer");
-const { startingPoint, addDepartment, addRole, addEmployee } = require('./prompts');
+const { startingPoint, addDepartment, addRole, addEmployee, updateRole } = require('./prompts');
 //  updateRole
 // const CompanyDB = require("./db");
 const {CompanyDB ,SelectTable}= require('./helpers');
@@ -60,15 +60,13 @@ async function chooseAction(choice) {
 			break;
 
         case 'Add an employee':
-		// 	const{ firstName, lastName, role, manager} = employee;
 			inquirer.prompt(addEmployee).then((emp) => db.makeQuery(`INSERT INTO employees (first_name, last_name, role_id, manager_id)
 			VALUES ($1, $2, $3, $4);`, [emp.firstName, emp.lastName, emp.role, emp.manager]))
 			break;
-        // case 'Update employee role':
-		// 	inquirer.prompt(updateRole).then((role, empId) =>{
-        //     // todo UPDATE employee SET role = `${role}` WHERE employee_id = ${empId}
-		// 	});
-        //     break;
+        case 'Update employee role':
+			inquirer.prompt(updateRole).then((update) => db.makeQuery(`UPDATE employees SET role_id = $1 WHERE id = $2;`,
+                [update.new_role, update.employeeId]))
+            break;
         case 'Quit':
             console.log('Shut Down');
             break;

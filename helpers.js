@@ -16,10 +16,16 @@ class CompanyDB{
 	}
 }
 
+const db = new CompanyDB(pool);
 
-
-
-
+async function getList(){
+	const choices =  await db.makeQuery(`SELECT first_name ||' '|| last_name AS employee
+		FROM employees;`)
+		console.log(choices.rows)
+		const choicesArray = choices.rows.map(row => row.employee)
+		console.log(choicesArray)
+		return choicesArray	
+} 
 
 
 class SelectTable{
@@ -46,20 +52,5 @@ class SelectTable{
 
 }
 
-
-// ! other part of list making
-// async  listSelected(choices) {
-// 	const choicesArray = await choices.rows.map(row => row.name)
-// 	console.log(`ChoicesArray: ${choicesArray}`);
-// 	return choicesArray;
-// }
-// async function getsThings(){
-// 	const selected = await pool.query(`SELECT * FROM departments;`)
-// 	console.log(selected.rows)
-// 	const choicesArray = selected.rows.map(row =>row.name)
-// 	console.log(choicesArray)
-// 	return choicesArray
-// }
-// getsThings()
 
 module.exports = {CompanyDB, SelectTable}  

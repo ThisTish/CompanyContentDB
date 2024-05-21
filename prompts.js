@@ -1,7 +1,7 @@
-const inquirer = require("inquirer");
+// const inquirer = require("inquirer");
 const CompanyDB = require("./db");
-const db = new CompanyDB
-const listSelected = require('./helpers')
+// const db = new CompanyDB(pool)
+// const listSelected = require('./helpers')
 // prompt to start out making a selection
 const startingPoint = [
 	{
@@ -49,7 +49,6 @@ const addRole = [
 		return input ?  true : error('Please enter an amount.')
 		}
 	},
-	// ! How to fill choices with list of departments
 	{
 	name: 'department',
 	message: 'Department Id:',
@@ -103,8 +102,8 @@ const updateRole = [
 	{
 		name: 'employeeId',
 		message:"Employee:",
-		type: 'input',
-		// choices: [retrieveEmployees()]
+		type: 'list',
+		choices: getList()
 	},
 	{
 		name:'new_role',

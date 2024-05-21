@@ -1,7 +1,7 @@
 // const Table = require('cli-table3');
 
-const selectTable = require("./helpers");
-const listSelected = require('./helpers');
+// const selectTable = require("./helpers");
+// const listSelected = require('./helpers');
 
 class CompanyDB{
 	constructor(pool){
@@ -147,4 +147,4 @@ class CompanyDB{
 	// 	}
 }
 
-module.exports = CompanyDB
+// module.exports = CompanyDB

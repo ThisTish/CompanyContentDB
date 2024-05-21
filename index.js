@@ -1,8 +1,8 @@
 const inquirer = require("inquirer");
 const { startingPoint, addDepartment, addRole, addEmployee } = require('./prompts');
 //  updateRole
-const CompanyDB = require("./db");
-
+// const CompanyDB = require("./db");
+const {CompanyDB ,SelectTable}= require('./helpers');
 const { Pool } = require('pg');
 
 const pool = new Pool(
@@ -15,29 +15,45 @@ const pool = new Pool(
     },
     console.log('Connected to the Company Database')
 );
-
-const connectedDB = new CompanyDB(pool)
-
+const db = new CompanyDB(pool)
 // switch and case for startingPoint
 async function chooseAction(choice) {
     console.log(`Choice:${choice}`)
     switch (choice) {
         case 'View all departments':
-            await connectedDB.getDepartments()
+            const selectedDepartments = await db.makeQuery(`SELECT * FROM departments;`)
+            const deptTable = new SelectTable(selectedDepartments.rows, [4,20]);
+			deptTable.createTable();
             break;
         case 'View all roles':
-            await connectedDB.getRoles()
+            const selectedRoles = await db.makeQuery(`SELECT r.id, r.title, d.name AS department, r.salary 
+			FROM roles AS r
+			LEFT JOIN departments AS d
+			ON r.department_id = d.id;`);
+            const roleTable = new SelectTable(selectedRoles.rows, [4,15,20,10]);
+			roleTable.createTable();
             break;
             
         case 'View all employees':
-            await connectedDB.getEmployees()
-            break;
+            const selectedEmployees = await db.makeQuery(`
+            SELECT e.id, e.first_name || ' ' || e.last_name AS employee, 
+            r.title AS title, 
+            d.name AS department, 
+            r.salary AS salary, 
+            m.first_name ||' '|| m.last_name AS manager
+            FROM employees AS e
+            JOIN roles AS r on e.role_id = r.id
+            JOIN departments AS d on r.department_id = d.id
+            LEFT JOIN employees AS m ON e.manager_id = m.id;`)
+            const employeeTable = new SelectTable(selectedEmployees.rows, [4, 30, 15, 20, 10, 30]);
+			employeeTable.createTable();            break;
 
         case 'Add a department':
 			inquirer.prompt(addDepartment).then((dep) => connectedDB.addADepartment(dep));
             break;
         case 'Add a role':
-			inquirer.prompt(addRole).then((role) => connectedDB.addARole(role));
+            addRole()
+			// inquirer.prompt(addRole).then((role) => connectedDB.addARole(role));
 			break;
 
         // case 'Add an employee':
@@ -63,10 +79,10 @@ async function chooseAction(choice) {
 async function init() {
     try {
         const answer = await inquirer.prompt(startingPoint);
-        await chooseAction(answer.action, connectedDB);
+        await chooseAction(answer.action, db);
     } catch (error) {
         console.error('Error during initialization:', error);
     }
 }
-
+module.exports = pool
 init();

@@ -62,6 +62,7 @@ class CompanyDB{
 		}
 		async addARole(input){
 			console.log(input)
+			
 			try{
 			await this.pool.query(`INSERT INTO roles (title, salary, department_id)
 			VALUES ($1, $2, $3);`, [input.title, input.salary, input.department])
@@ -70,6 +71,22 @@ class CompanyDB{
 			catch(err){
 				console.log('Error trying to add department.', err)
 			}
+		}
+
+		// !one part of list making
+		async listDept(){
+			const selected = await this.pool.query(`SELECT * FROM departments;`);
+			console.log(`listDept Selected: ${selected}`)
+			listSelected(selected);
+
+		}
+
+		async getsThings(){
+			const selected = await pool.query(`SELECT * FROM departments;`)
+			console.log(selected.rows)
+			const choicesArray = selected.rows.map(row =>row.name)
+			console.log(choicesArray)
+			return choicesArray
 		}
 		// ! how to input dept id, by selecting department name???
 		// async addAnEmployee(input){
@@ -83,11 +100,6 @@ class CompanyDB{
 		// 		console.log('Error trying to add department.', err)
 		// 	}
 		// }
-// !one part of list making
-		async listDept(){
-			const selected = await this.pool.query(`SELECT * FROM departments;`);
-			listSelected(selected);
-		}
 
 		// *Bonuses
 		// todo add to prompts & s/c

@@ -1,6 +1,7 @@
 const inquirer = require("inquirer");
 const CompanyDB = require("./db");
 const db = new CompanyDB
+const listSelected = require('./helpers')
 // prompt to start out making a selection
 const startingPoint = [
 	{
@@ -22,8 +23,16 @@ const addDepartment = [{
 	}
 ];
 
-const addRole = [
-	{
+function addRole() {
+	db.getsThings().then(({rows})=>{
+		let depts = rows
+		console.log(`Depts:${depts}`)
+		const deptsChoice = depts.map(({id,name})=>{
+			({name: name, value: id})
+		})
+	
+	inquirer.prompt([
+		{
 	name: 'name',
 	message: 'Name of new role:',
 	type: 'input',
@@ -36,25 +45,28 @@ const addRole = [
 	message: 'Salary:',
 	type: 'input',
 	validate: async(input) =>{
-		return input ?  true : error('Please enter an amout.')
+		return input ?  true : error('Please enter an amount.')
 		}
 	},
 	// ! How to fill choices with list of departments
-// 	{
-// 	name: 'department',
-// 	message: 'Department:',
-// 	type: 'list',
-// 	choices: db.listDept()
-// }
-{
+	{
 	name: 'department',
 	message: 'Department:',
-	type: 'input',
-	validate: async(input) =>{
-		return input ?  true : error('Please enter an amout.')
-		}
+	type: 'list',
+	choices: deptsChoice
+	}
+])
+})
 }
-];
+// {
+// 	name: 'department',
+// 	message: 'Department:',
+// 	type: 'input',
+// 	validate: async(input) =>{
+// 		return input ?  true : error('Please enter an amout.')
+// 		}
+// }
+
 const addEmployee = [
 	{
 	name: 'firstName',

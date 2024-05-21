@@ -1,5 +1,4 @@
 const Table = require('cli-table3');
-const pool = require('./index')
 
 
 class CompanyDB{
@@ -14,20 +13,34 @@ class CompanyDB{
 			console.log(`error in getting query:`, error)
 		}
 	}
+	async getList(sql){
+		try{
+			const choices =  await this.makeQuery(sql)
+			console.log(choices.rows)
+			const choicesArray = choices.rows.map(row => row.employee)
+			console.log(choicesArray)
+			return choicesArray
+		}catch (error) {
+		console.log(`error in getting query:`, error)
+		}
+	} 
 }
+// async function getList(){
+// 	try{
+// 		const db = new CompanyDB(pool)
+// 		const choices =  await db.makeQuery(`SELECT first_name ||' '|| last_name AS employee
+// 		FROM employees;`)
+// 		console.log(choices.rows)
+// 		const choicesArray = choices.rows.map(row => row.employee)
+// 		console.log(choicesArray)
+// 		return choicesArray
+// 	}catch (error) {
+// 	console.log(`error in getting query:`, error)
+// 	}
+// }
 
-const db = new CompanyDB(pool);
 
-async function getList(){
-	const choices =  await db.makeQuery(`SELECT first_name ||' '|| last_name AS employee
-		FROM employees;`)
-		console.log(choices.rows)
-		const choicesArray = choices.rows.map(row => row.employee)
-		console.log(choicesArray)
-		return choicesArray	
-} 
-
-
+	
 class SelectTable{
 	constructor(data, col){
 		this.data = data;

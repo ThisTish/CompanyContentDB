@@ -1,7 +1,18 @@
-// const inquirer = require("inquirer");
-const CompanyDB = require("./db");
-// const db = new CompanyDB(pool)
-// const listSelected = require('./helpers')
+const {CompanyDB ,SelectTable}= require('./helpers');
+const {Pool} = require('pg')
+const pool = new Pool(
+    {
+        user: 'postgres',
+        password: 'letsgo',
+        host: 'localhost',
+        database: 'company_db',
+		port: 5432
+    },
+    console.log('Connected to the Company Database')
+);
+const db = new CompanyDB(pool)
+
+
 // prompt to start out making a selection
 const startingPoint = [
 	{
@@ -12,7 +23,7 @@ const startingPoint = [
 	}
 ];
 
-// // adding prompts section
+// adding prompts section
 const addDepartment = [{
 	name: 'department',
 	message: 'Name of new department:',
@@ -98,12 +109,13 @@ const addEmployee = [
 ];
 
 // updating prompt section
-const updateRole = [
+const updateRole = ()=> db.getList(`SELECT first_name ||' '|| last_name AS employee
+FROM employees;`).then((choicesArray)=>[
 	{
 		name: 'employeeId',
 		message:"Employee:",
 		type: 'list',
-		choices: getList()
+		choices: choicesArray
 	},
 	{
 		name:'new_role',
@@ -113,7 +125,7 @@ const updateRole = [
 			return input ? true : error('Please select a new role.')
 		}
 	}
-]
+])
 
 module.exports = { startingPoint, addDepartment, addRole, addEmployee, updateRole }
 // , , addRole, updateRole

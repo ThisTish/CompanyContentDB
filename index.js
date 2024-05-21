@@ -89,9 +89,10 @@ async function chooseAction(choice) {
                 break;
             case 'Update employee role':
                 try {
-                    inquirer.prompt(updateRole).then((update) => 
-                        db.makeQuery(`UPDATE employees SET role_id = $1 WHERE id = $2;`, [update.new_role, update.employeeId])
-                    );
+                    const questions = await updateRole()
+                    const update = await inquirer.prompt(questions) 
+                    await db.makeQuery(`UPDATE employees SET role_id = $2 WHERE first_name ||' '|| last_name = $1;`, [update.employeeId, update.new_role])
+
                 } catch (error) {
                     console.error('Error updating employee role:', error);
                 }
@@ -119,6 +120,7 @@ async function init() {
 }
 
 init();
+
 
 
 module.exports = pool

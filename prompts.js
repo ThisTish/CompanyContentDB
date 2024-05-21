@@ -60,14 +60,6 @@ const addRole = [
 // )
 // })
 // }
-// {
-// 	name: 'department',
-// 	message: 'Department:',
-// 	type: 'input',
-// 	validate: async(input) =>{
-// 		return input ?  true : error('Please enter an amout.')
-// 		}
-// }
 
 const addEmployee = [
 	{
@@ -88,7 +80,7 @@ const addEmployee = [
 	},
 	{
 	name: 'role',
-	message: "Employee's role:",
+	message: "Employee's role Id:",
 	type: 'input',
 	// choices: [retrieveRoles()]
 	validate: async(input) =>{
@@ -97,7 +89,7 @@ const addEmployee = [
 	},
 	{
 	name: 'manager',
-	message: "Employee's direct manager:",
+	message: "Employee's direct manager Id:",
 	type: 'input',
 	// choices: [retrieveManagers()]
 	validate: async(input) =>{

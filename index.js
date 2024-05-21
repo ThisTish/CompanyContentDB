@@ -59,11 +59,11 @@ async function chooseAction(choice) {
 			// inquirer.prompt(addRole).then((role) => connectedDB.addARole(role));
 			break;
 
-        // case 'Add an employee':
+        case 'Add an employee':
 		// 	const{ firstName, lastName, role, manager} = employee;
-		// 	inquirer.prompt(addEmployee).then((emp) =>{
-		// 	});
-		// 	break;
+			inquirer.prompt(addEmployee).then((emp) => db.makeQuery(`INSERT INTO employees (first_name, last_name, role_id, manager_id)
+			VALUES ($1, $2, $3, $4);`, [emp.firstName, emp.lastName, emp.role, emp.manager]))
+			break;
         // case 'Update employee role':
 		// 	inquirer.prompt(updateRole).then((role, empId) =>{
         //     // todo UPDATE employee SET role = `${role}` WHERE employee_id = ${empId}

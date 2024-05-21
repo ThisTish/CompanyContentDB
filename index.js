@@ -49,10 +49,13 @@ async function chooseAction(choice) {
 			employeeTable.createTable();            break;
 
         case 'Add a department':
-			inquirer.prompt(addDepartment).then((dep) => connectedDB.addADepartment(dep));
+			inquirer.prompt(addDepartment).then((dep) => db.makeQuery(`INSERT INTO departments(name)
+			VALUES ($1);`, [dep.department]))
+            // console.log(`Success!New department was added.`)
             break;
         case 'Add a role':
-            addRole()
+            inquirer.prompt(addRole).then((role) => db.makeQuery(`INSERT INTO roles (title, salary, department_id)
+			VALUES ($1, $2, $3);`, [role.name, role.salary, role.department]))
 			// inquirer.prompt(addRole).then((role) => connectedDB.addARole(role));
 			break;
 

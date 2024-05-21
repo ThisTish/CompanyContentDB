@@ -23,15 +23,16 @@ const addDepartment = [{
 	}
 ];
 
-function addRole() {
-	db.getsThings().then(({rows})=>{
-		let depts = rows
-		console.log(`Depts:${depts}`)
-		const deptsChoice = depts.map(({id,name})=>{
-			({name: name, value: id})
-		})
+// function addRole() {
+// 	db.getsThings().then(({rows})=>{
+// 		let depts = rows
+// 		console.log(`Depts:${depts}`)
+// 		const deptsChoice = depts.map(({id,name})=>{
+// 			({name: name, value: id})
+// 		})
 	
-	inquirer.prompt([
+	// inquirer.prompt([
+const addRole = [
 		{
 	name: 'name',
 	message: 'Name of new role:',
@@ -51,13 +52,14 @@ function addRole() {
 	// ! How to fill choices with list of departments
 	{
 	name: 'department',
-	message: 'Department:',
-	type: 'list',
-	choices: deptsChoice
+	message: 'Department Id:',
+	type: 'input',
+	// choices: 
 	}
-])
-})
-}
+]
+// )
+// })
+// }
 // {
 // 	name: 'department',
 // 	message: 'Department:',

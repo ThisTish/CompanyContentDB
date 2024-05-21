@@ -6,9 +6,9 @@ class CompanyDB{
 	constructor(pool){
 		this.pool = pool;
 	}
-	async makeQuery(sql){
+	async makeQuery(sql, val){
 		try {
-			const selected = await this.pool.query(sql)
+			const selected = await this.pool.query(sql, val)
 			return selected
 		} catch (error) {
 			console.log(`error in getting query:`, error)

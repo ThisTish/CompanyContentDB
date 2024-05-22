@@ -1,4 +1,4 @@
-const {CompanyDB ,SelectTable}= require('./helpers');
+const {CompanyDB }= require('./helpers');
 const {Pool} = require('pg')
 const pool = new Pool(
     {
@@ -19,7 +19,8 @@ const startingPoint = [
 		name: 'action',
 		message: 'What would you like to do?',
 		type: 'list',
-		choices: ['View all departments', 'View all roles', 'View all employees', 'Add a department', 'Add a role', 'Add an employee', 'Update employee role', 'Update employee manager', 'Quit']
+		choices: ['View all departments', 'View all roles', 'View all employees', 'View employees by manager',
+		'Add a department', 'Add a role', 'Add an employee', 'Update employee role', 'Update employee manager', 'Quit']
 	}
 ];
 
@@ -128,5 +129,18 @@ FROM employees;`).then((choicesArray)=>[
 	}
 ])
 
-module.exports = { startingPoint, addDepartment, addRole, addEmployee, updateRole, updateManager }
+// prompts for catagorized viewing
+const selectManager = () => db.getList(`SELECT first_name ||' '|| last_name AS name
+FROM employees;`).then((choicesArray)=>
+[
+	{
+		name: 'name',
+		message: 'Manager:',
+		type: 'list',
+		choices: choicesArray
+	}
+])
+
+
+module.exports = { startingPoint, addDepartment, addRole, addEmployee, updateRole, updateManager, selectManager }
 // , , addRole, updateRole

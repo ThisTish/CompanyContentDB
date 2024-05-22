@@ -1,5 +1,5 @@
 const inquirer = require("inquirer");
-const { startingPoint, addDepartment, addRole, addEmployee, updateRole, updateManager } = require('./prompts');
+const { startingPoint, addDepartment, addRole, addEmployee, updateRole, updateManager, selectManager } = require('./prompts');
 const {CompanyDB ,SelectTable}= require('./helpers');
 const { Pool } = require('pg');
 
@@ -59,6 +59,24 @@ async function chooseAction(choice) {
                     console.error('Error fetching employees:', error);
                 }
                 break;
+                case 'View employees by manager':
+                try {
+                    const questions = await selectManager()
+                    const selected = await inquirer.prompt(questions)
+                    const managerId = await db.getIdByName(`SELECT id FROM employees WHERE first_name || ' ' || last_name = $1;`, selected.name)
+                    if (!managerId) {
+                        throw new Error(`No manager found with name: ${selected.name}`);
+                    }
+                    const selectedEmployees = await db.makeQuery(`SELECT first_name ||' '|| last_name AS Employee
+                    FROM employees WHERE manager_id = $1;`, [managerId.id]);
+                    const employeeTable = new SelectTable(selectedEmployees.rows, [30]);
+                    employeeTable.createTable();
+                } catch (error) {
+                    console.log(`Error getting employees by manager`);
+                }
+                break;
+
+                
             case 'Add a department':
                 try {
                     inquirer.prompt(addDepartment).then((dep) => 
@@ -103,9 +121,7 @@ async function chooseAction(choice) {
                 } catch (error) {
                     console.error('Error updating employee role:', error);
                 }
-                break;
-                // *not really started.
-            
+                break;            
             case 'Update employee manager':
                 try {
                     const questions = await updateManager()
@@ -114,7 +130,7 @@ async function chooseAction(choice) {
                     await db.makeQuery(`UPDATE employees SET manager_id = $2 WHERE first_name ||' '|| last_name = $1;`, [update.employee, managerId.id])
                     console.log(`Success! ${update.employee} now has ${update.manager} as a manager.`)
                 } catch (error) {
-                    console.error('Error updating employee role:', error);
+                    console.error('Error updating employee manager:', error);
                 }
                 break;
             case 'Quit':

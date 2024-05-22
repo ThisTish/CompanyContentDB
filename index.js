@@ -71,9 +71,12 @@ async function chooseAction(choice) {
                 break;
             case 'Add a role':
                 try {
-                    inquirer.prompt(addRole).then((role) => 
-                        db.makeQuery(`INSERT INTO roles (title, salary, department_id) VALUES ($1, $2, $3);`, [role.name, role.salary, role.department])
-                    );
+                    const questions = await addRole()
+                    const added = await inquirer.prompt(questions)
+                    const  departmentId = await db.getIdByName(`SELECT id FROM departments WHERE name = $1;`,added.department)
+                    await db.makeQuery(`INSERT INTO roles (title, salary, department_id) VALUES ($1, $2, $3);`, [added.name, added.salary, departmentId.id])
+                    console.log(`Success! ${added.name} has been added!`)
+                    
                 } catch (error) {
                     console.error('Error adding role:', error);
                 }
@@ -92,7 +95,7 @@ async function chooseAction(choice) {
                     const questions = await updateRole()
                     const update = await inquirer.prompt(questions) 
                     await db.makeQuery(`UPDATE employees SET role_id = $2 WHERE first_name ||' '|| last_name = $1;`, [update.employeeId, update.new_role])
-
+                    console.log(`Success! ${update.employeeId} updated with the new role of ${update.role}`)
                 } catch (error) {
                     console.error('Error updating employee role:', error);
                 }

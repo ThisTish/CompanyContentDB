@@ -34,16 +34,10 @@ const addDepartment = [{
 	}
 ];
 
-// function addRole() {
-// 	db.getsThings().then(({rows})=>{
-// 		let depts = rows
-// 		console.log(`Depts:${depts}`)
-// 		const deptsChoice = depts.map(({id,name})=>{
-// 			({name: name, value: id})
-// 		})
-	
-	// inquirer.prompt([
-const addRole = [
+// const updateRole = ()=> db.getList(`SELECT first_name ||' '|| last_name AS employee
+// FROM employees;`).then((choicesArray)=>[
+const addRole = () => db.getList(`SELECT name FROM departments;`).then((choicesArray)=>
+	[
 		{
 	name: 'name',
 	message: 'Name of new role:',
@@ -62,11 +56,11 @@ const addRole = [
 	},
 	{
 	name: 'department',
-	message: 'Department Id:',
-	type: 'input',
-	// choices: 
+	message: 'Department:',
+	type: 'list',
+	choices: choicesArray
 	}
-]
+])
 // )
 // })
 // }
@@ -109,7 +103,7 @@ const addEmployee = [
 ];
 
 // updating prompt section
-const updateRole = ()=> db.getList(`SELECT first_name ||' '|| last_name AS employee
+const updateRole = ()=> db.getList(`SELECT first_name ||' '|| last_name AS name
 FROM employees;`).then((choicesArray)=>[
 	{
 		name: 'employeeId',

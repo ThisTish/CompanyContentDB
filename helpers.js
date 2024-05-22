@@ -17,28 +17,26 @@ class CompanyDB{
 		try{
 			const choices =  await this.makeQuery(sql)
 			console.log(choices.rows)
-			const choicesArray = choices.rows.map(row => row.employee)
+			const choicesArray = choices.rows.map(row => row.name)
 			console.log(choicesArray)
 			return choicesArray
 		}catch (error) {
 		console.log(`error in getting query:`, error)
 		}
 	} 
+	async getIdByName(sql, input){
+		try {
+			const id = await this.makeQuery(sql, [input])
+			if(id.rows.length > 0){
+				return id.rows[0]
+			}
+			else{console.error(`Department ${input} not found`);
+			}
+		} catch (error) {
+			console.log(`Error in getting Id with ${input}`,error )
+		}
+	}
 }
-// async function getList(){
-// 	try{
-// 		const db = new CompanyDB(pool)
-// 		const choices =  await db.makeQuery(`SELECT first_name ||' '|| last_name AS employee
-// 		FROM employees;`)
-// 		console.log(choices.rows)
-// 		const choicesArray = choices.rows.map(row => row.employee)
-// 		console.log(choicesArray)
-// 		return choicesArray
-// 	}catch (error) {
-// 	console.log(`error in getting query:`, error)
-// 	}
-// }
-
 
 	
 class SelectTable{

@@ -76,16 +76,18 @@ async function chooseAction(choice) {
                     const  departmentId = await db.getIdByName(`SELECT id FROM departments WHERE name = $1;`,added.department)
                     await db.makeQuery(`INSERT INTO roles (title, salary, department_id) VALUES ($1, $2, $3);`, [added.name, added.salary, departmentId.id])
                     console.log(`Success! ${added.name} has been added!`)
-                    
                 } catch (error) {
                     console.error('Error adding role:', error);
                 }
                 break;
             case 'Add an employee':
                 try {
-                    inquirer.prompt(addEmployee).then((emp) => 
-                        db.makeQuery(`INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4);`, [emp.firstName, emp.lastName, emp.role, emp.manager])
-                    );
+                    const questions = await addEmployee()
+                    const added = await inquirer.prompt(questions)
+                    const roleId = await db.getIdByName(`SELECT id FROM roles WHERE title = $1`, added.role)
+                    const managerId = await db.getIdByName(`SELECT id FROM employees WHERE first_name || ' ' || last_name = $1;`, added.manager)
+                    await db.makeQuery(`INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4);`, [added.firstName, added.lastName, roleId.id, managerId.id])
+                    console.log(`Success! ${added.firstName} ${added.lastName} added!`);
                 } catch (error) {
                     console.error('Error adding employee:', error);
                 }

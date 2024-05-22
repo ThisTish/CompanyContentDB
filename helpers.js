@@ -21,16 +21,17 @@ class CompanyDB{
 			console.log(choicesArray)
 			return choicesArray
 		}catch (error) {
-		console.log(`error in getting query:`, error)
+		console.log(`error in getting list:`, error)
 		}
 	} 
 	async getIdByName(sql, input){
+		console.log(input)
 		try {
 			const id = await this.makeQuery(sql, [input])
 			if(id.rows.length > 0){
 				return id.rows[0]
 			}
-			else{console.error(`Department ${input} not found`);
+			else{console.error(`${input} not found`);
 			}
 		} catch (error) {
 			console.log(`Error in getting Id with ${input}`,error )

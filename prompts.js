@@ -33,9 +33,6 @@ const addDepartment = [{
 		}
 	}
 ];
-
-// const updateRole = ()=> db.getList(`SELECT first_name ||' '|| last_name AS employee
-// FROM employees;`).then((choicesArray)=>[
 const addRole = () => db.getList(`SELECT name FROM departments;`).then((choicesArray)=>
 	[
 		{
@@ -60,12 +57,12 @@ const addRole = () => db.getList(`SELECT name FROM departments;`).then((choicesA
 	type: 'list',
 	choices: choicesArray
 	}
-])
-// )
-// })
-// }
-
-const addEmployee = [
+]);
+const addEmployee = async () => {
+	const choicesArray = await db.getList(`SELECT first_name||' '||last_name AS name FROM employees;`)
+	const rolesArray = await db.getList(`SELECT title AS name FROM roles;`)
+	
+	return [
 	{
 	name: 'firstName',
 	message: "Employee's first name:",
@@ -85,22 +82,16 @@ const addEmployee = [
 	{
 	name: 'role',
 	message: "Employee's role Id:",
-	type: 'input',
-	// choices: [retrieveRoles()]
-	validate: async(input) =>{
-		return input ?  true : error('Please enter a last name.')
-		}
+	type: 'list',
+	choices: rolesArray
 	},
 	{
 	name: 'manager',
 	message: "Employee's direct manager Id:",
-	type: 'input',
-	// choices: [retrieveManagers()]
-	validate: async(input) =>{
-		return input ?  true : error('Please enter a last name.')
-		}
+	type: 'list',
+	choices: choicesArray
 	}
-];
+]}
 
 // updating prompt section
 const updateRole = ()=> db.getList(`SELECT first_name ||' '|| last_name AS name

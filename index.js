@@ -148,6 +148,27 @@ async function chooseAction(choice) {
                     console.error('Error updating employee manager:', error);
                 }
                 break;
+            case 'View department budget':
+                try {
+                    const questions = await selectDepartment()
+                    const selected = await inquirer.prompt(questions)
+                    const departmentId = await db.getIdByName(`SELECT id FROM departments WHERE name = $1;`, selected.name)
+                    const  departmentRoleId = await db.getIdByName(`SELECT id FROM roles WHERE department_id = $1;`, departmentId.id)
+                    const selectedSum = await db.makeQuery(`
+                    SELECT d.name AS department, SUM(r.salary) AS total
+                    FROM roles AS r
+                    JOIN employees AS e ON r.id = e.role_id
+                    INNER JOIN departments AS d ON r.department_id = d.id
+                    WHERE d.id = $1 GROUP BY d.name;`, [departmentRoleId.id])
+                    const budget = new SelectTable(selectedSum.rows, [17]);
+                    console.log(selectedSum)
+                    console.log(budget)
+                    budget.createTable();
+                    
+                } catch (error) {
+                    console.log('Error getting budget', error);
+                }
+                break;    
             case 'Quit':
                 console.log('Shut Down');
                 break;

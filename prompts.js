@@ -20,7 +20,7 @@ const startingPoint = [
 		message: 'What would you like to do?',
 		type: 'list',
 		choices: ['View all departments', 'View all roles', 'View all employees', 'View employees by manager', 'View employees by department',
-		'Add a department', 'Add a role', 'Add an employee', 'Update employee role', 'Update employee manager', 'Quit']
+		'View department budget','Add a department', 'Add a role', 'Add an employee', 'Update employee role', 'Update employee manager', 'View department budget','Quit']
 	}
 ];
 

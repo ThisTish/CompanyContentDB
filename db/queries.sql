@@ -54,5 +54,11 @@ INNER JOIN departments AS d ON r.department_id = d.id;
 SELECT SUM(r.salary), d.name
 FROM roles AS r 
 LEFT JOIN departments AS d 
-ON r.department_id = d.id;
+ON r.department_id = d.id
+WHERE d.id = $1;
 
+
+SELECT d.name AS department, SUM(r.salary) AS total
+FROM roles AS r
+JOIN employees AS e ON r.id = e.role_id
+INNER JOIN departments AS d ON r.department_id = $1;

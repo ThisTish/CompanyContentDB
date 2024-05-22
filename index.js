@@ -171,6 +171,8 @@ async function chooseAction(choice) {
                 break;    
             case 'Quit':
                 console.log('Shut Down');
+                pool.end();
+                return;
                 break;
             default:
                 console.log('Invalid choice');
@@ -178,7 +180,7 @@ async function chooseAction(choice) {
     } catch (error) {
         console.error('Error during action:', error);
     }
-        // choice !== 'Quit' ? init() : pool.end();
+    init();
 };
 
 

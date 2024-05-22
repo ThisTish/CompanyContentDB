@@ -1,5 +1,5 @@
 const inquirer = require("inquirer");
-const { startingPoint, addDepartment, addRole, addEmployee, updateRole, updateManager, selectManager } = require('./prompts');
+const { startingPoint, addDepartment, addRole, addEmployee, updateRole, updateManager, selectManager, selectDepartment } = require('./prompts');
 const {CompanyDB ,SelectTable}= require('./helpers');
 const { Pool } = require('pg');
 
@@ -59,24 +59,39 @@ async function chooseAction(choice) {
                     console.error('Error fetching employees:', error);
                 }
                 break;
-                case 'View employees by manager':
-                try {
-                    const questions = await selectManager()
-                    const selected = await inquirer.prompt(questions)
-                    const managerId = await db.getIdByName(`SELECT id FROM employees WHERE first_name || ' ' || last_name = $1;`, selected.name)
-                    if (!managerId) {
-                        throw new Error(`No manager found with name: ${selected.name}`);
-                    }
-                    const selectedEmployees = await db.makeQuery(`SELECT first_name ||' '|| last_name AS Employee
-                    FROM employees WHERE manager_id = $1;`, [managerId.id]);
-                    const employeeTable = new SelectTable(selectedEmployees.rows, [30]);
-                    employeeTable.createTable();
-                } catch (error) {
-                    console.log(`Error getting employees by manager`);
+            case 'View employees by manager':
+            try {
+                const questions = await selectManager()
+                const selected = await inquirer.prompt(questions)
+                const managerId = await db.getIdByName(`SELECT id FROM employees WHERE first_name || ' ' || last_name = $1;`, selected.name)
+                if (!managerId) {
+                    throw new Error(`No manager found with name: ${selected.name}`);
                 }
-                break;
-
-                
+                const selectedEmployees = await db.makeQuery(`SELECT first_name ||' '|| last_name AS Employee
+                FROM employees WHERE manager_id = $1;`, [managerId.id]);
+                const employeeTable = new SelectTable(selectedEmployees.rows, [30]);
+                employeeTable.createTable();
+            } catch (error) {
+                console.log(`Error getting employees by manager`);
+            }
+            break;
+            case 'View employees by department':
+            try {
+                const questions = await selectDepartment()
+                const selected = await inquirer.prompt(questions)
+                const  departmentId = await db.getIdByName(`SELECT id FROM departments WHERE name = $1;`, selected.name)
+                const  departmentRoleId = await db.getIdByName(`SELECT id FROM roles WHERE department_id = $1;`, departmentId.id)
+                const selectedEmployees = await db.makeQuery(`SELECT e.first_name ||' '|| e.last_name AS employee, d.name AS department
+                    FROM employees AS e
+                    JOIN roles AS r ON e.role_id = $2
+                    INNER JOIN departments AS d ON r.department_id = d.id
+                    WHERE d.id = $1;`, [departmentId.id, departmentRoleId.id]);
+                const employeeTable = new SelectTable(selectedEmployees.rows, [30]);
+                employeeTable.createTable();
+            } catch (error) {
+                console.log(`Error getting employees by manager`);
+            }
+            break;
             case 'Add a department':
                 try {
                     inquirer.prompt(addDepartment).then((dep) => 

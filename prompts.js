@@ -19,7 +19,7 @@ const startingPoint = [
 		name: 'action',
 		message: 'What would you like to do?',
 		type: 'list',
-		choices: ['View all departments', 'View all roles', 'View all employees', 'View employees by manager',
+		choices: ['View all departments', 'View all roles', 'View all employees', 'View employees by manager', 'View employees by department',
 		'Add a department', 'Add a role', 'Add an employee', 'Update employee role', 'Update employee manager', 'Quit']
 	}
 ];
@@ -140,7 +140,18 @@ FROM employees;`).then((choicesArray)=>
 		choices: choicesArray
 	}
 ])
+const selectDepartment = () => db.getList(`SELECT name FROM departments`).then((choicesArray)=>
+[
+	{
+		name: 'name',
+		message: 'Department:',
+		type: 'list',
+		choices: choicesArray
+	}
+])
 
 
-module.exports = { startingPoint, addDepartment, addRole, addEmployee, updateRole, updateManager, selectManager }
+
+
+module.exports = { startingPoint, addDepartment, addRole, addEmployee, updateRole, updateManager, selectManager, selectDepartment }
 // , , addRole, updateRole

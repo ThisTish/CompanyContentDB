@@ -1,5 +1,5 @@
 const inquirer = require("inquirer");
-const { startingPoint, addDepartment, addRole, addEmployee, updateRole } = require('./prompts');
+const { startingPoint, addDepartment, addRole, addEmployee, updateRole, updateManager } = require('./prompts');
 const {CompanyDB ,SelectTable}= require('./helpers');
 const { Pool } = require('pg');
 
@@ -96,8 +96,23 @@ async function chooseAction(choice) {
                 try {
                     const questions = await updateRole()
                     const update = await inquirer.prompt(questions) 
-                    await db.makeQuery(`UPDATE employees SET role_id = $2 WHERE first_name ||' '|| last_name = $1;`, [update.employeeId, update.new_role])
-                    console.log(`Success! ${update.employeeId} updated with the new role of ${update.role}`)
+                    const roleId = await db.getIdByName(`SELECT id FROM roles WHERE title = $1`, update.role)
+                    const employeeId = await db.getIdByName(`SELECT id FROM employees WHERE first_name || ' ' || last_name = $1;`, update.name)
+                    await db.makeQuery(`UPDATE employees SET role_id = $2 WHERE first_name ||' '|| last_name = $1;`, [employeeId.id, roleId.id])
+                    console.log(`Success! ${update.name} updated with the new role of ${update.role}`)
+                } catch (error) {
+                    console.error('Error updating employee role:', error);
+                }
+                break;
+                // *not really started.
+            
+            case 'Update employee manager':
+                try {
+                    const questions = await updateManager()
+                    const update = await inquirer.prompt(questions)
+                    const managerId = await db.getIdByName(`SELECT id FROM employees WHERE first_name || ' ' || last_name = $1;`, update.manager)
+                    await db.makeQuery(`UPDATE employees SET manager_id = $2 WHERE first_name ||' '|| last_name = $1;`, [update.employee, managerId.id])
+                    console.log(`Success! ${update.employee} now has ${update.manager} as a manager.`)
                 } catch (error) {
                     console.error('Error updating employee role:', error);
                 }

@@ -19,7 +19,7 @@ const startingPoint = [
 		name: 'action',
 		message: 'What would you like to do?',
 		type: 'list',
-		choices: ['View all departments', 'View all roles', 'View all employees', 'Add a department', 'Add a role', 'Add an employee', 'Update employee role', 'Quit']
+		choices: ['View all departments', 'View all roles', 'View all employees', 'Add a department', 'Add a role', 'Add an employee', 'Update employee role', 'Update employee manager', 'Quit']
 	}
 ];
 
@@ -94,23 +94,39 @@ const addEmployee = async () => {
 ]}
 
 // updating prompt section
-const updateRole = ()=> db.getList(`SELECT first_name ||' '|| last_name AS name
+const updateRole = async () =>{
+const employeesArray = await db.getList(`SELECT first_name ||' '|| last_name AS name
+FROM employees;`)
+const rolesArray = await db.getList(`SELECT title AS name FROM roles;`)
+return [
+	{
+		name: 'name',
+		message:"Employee:",
+		type: 'list',
+		choices: employeesArray
+	},
+	{
+		name:'role',
+		message: "Employee's role:",
+		type: 'list',
+		choices: rolesArray
+	}
+]}
+const updateManager = ()=> db.getList(`SELECT first_name ||' '|| last_name AS name
 FROM employees;`).then((choicesArray)=>[
 	{
-		name: 'employeeId',
+		name: 'employee',
 		message:"Employee:",
 		type: 'list',
 		choices: choicesArray
 	},
 	{
-		name:'new_role',
+		name:'manager',
 		message: "Employee's role:",
-		type: 'input',
-		validate: async(input) =>{
-			return input ? true : error('Please select a new role.')
-		}
+		type: 'list',
+		choices: choicesArray
 	}
 ])
 
-module.exports = { startingPoint, addDepartment, addRole, addEmployee, updateRole }
+module.exports = { startingPoint, addDepartment, addRole, addEmployee, updateRole, updateManager }
 // , , addRole, updateRole

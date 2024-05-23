@@ -1,6 +1,6 @@
 const inquirer = require("inquirer");
-const { startingPoint, addDepartment, addRole, addEmployee, updateRole, updateManager, selectManager, selectDepartment, selectRole, selectEmployee } = require('./prompts');
-const {CompanyDB ,SelectTable}= require('./helpers');
+const { startingPoint, addDepartment, addRole, addEmployee, updateRole, updateManager, selectManager, selectDepartment, selectRole, selectEmployee } = require('./assets/js/prompts');
+const {CompanyDB ,SelectTable}= require('./assets/js/helpers');
 const { Pool } = require('pg');
 
 const pool = new Pool(

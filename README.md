@@ -101,6 +101,10 @@ Each viewing choice will either display the selected data or ask for further spe
 
 You can use the application as much as you want by repeating the `node index.js` command.
 
+### Video Walkthrough
+
+[A quick video on how to use.](https://drive.google.com/file/d/14TV8lfM3IUsbTGlRzE6mYdnzXLuFuS1c/view)
+
 ## 🌐 Contributing <a id="contributing"></a>
 
 
@@ -112,7 +116,7 @@ Please contact me with my email provided below.
 If you have any questions, feel free to contact me at:
 
 - *GitHub: [ThisTish](https://github.com/ThisTish)*
-- *Contact: tisha.sirface@gmail.com*
+- *Contact: tish.sirface@gmail.com*
 
 ## 🪪 License <a id="license"></a>
 

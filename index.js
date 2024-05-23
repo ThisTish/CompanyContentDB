@@ -1,5 +1,5 @@
 const inquirer = require("inquirer");
-const { startingPoint, addDepartment, addRole, addEmployee, updateRole, updateManager, selectManager, selectDepartment } = require('./prompts');
+const { startingPoint, addDepartment, addRole, addEmployee, updateRole, updateManager, selectManager, selectDepartment, selectRole, selectEmployee } = require('./prompts');
 const {CompanyDB ,SelectTable}= require('./helpers');
 const { Pool } = require('pg');
 
@@ -169,7 +169,37 @@ async function chooseAction(choice) {
                     console.log('Error getting budget', error);
                 }
                 break;    
-            case 'Quit':
+                case 'Delete a department':
+                    try {
+                        const questions = await selectDepartment()
+                        const selected = await inquirer.prompt(questions)
+                        await db.makeQuery(`DELETE FROM departments WHERE name = $1`, [selected.name]);
+                        console.log(`Success! ${selected.name} has been removed.`)
+                    } catch (error) {
+                        console.error('Error removing department=:', error);
+                    }
+                    break;
+                case 'Delete a role':
+                    try {
+                        const questions = await selectRole()
+                        const selected = await inquirer.prompt(questions)
+                        await db.makeQuery(`DELETE FROM roles WHERE title = $1`, [selected.name]);
+                        console.log(`Success! ${selected.name} has been removed.`)
+                    } catch (error) {
+                        console.error('Error removing department=:', error);
+                    }
+                    break;
+                case 'Delete an employee':
+                    try {
+                        const questions = await selectEmployee()
+                        const selected = await inquirer.prompt(questions)
+                        await db.makeQuery(`DELETE FROM employees WHERE first_name||' '||last_name = $1`, [selected.name]);
+                        console.log(`Success! ${selected.name} has been removed.`)
+                    } catch (error) {
+                        console.error('Error removing role', error);
+                    }
+                    break;
+                case 'Quit':
                 console.log('Shut Down');
                 pool.end();
                 return;

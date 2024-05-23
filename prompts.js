@@ -20,7 +20,8 @@ const startingPoint = [
 		message: 'What would you like to do?',
 		type: 'list',
 		choices: ['View all departments', 'View all roles', 'View all employees', 'View employees by manager', 'View employees by department',
-		'View department budget','Add a department', 'Add a role', 'Add an employee', 'Update employee role', 'Update employee manager', 'View department budget','Quit']
+		'View department budget','Add a department', 'Add a role', 'Add an employee', 'Update employee role', 'Update employee manager', 'View department budget',
+		'Delete a department','Delete a role','Delete an employee','Quit']
 	}
 ];
 
@@ -129,13 +130,23 @@ FROM employees;`).then((choicesArray)=>[
 	}
 ])
 
-// prompts for catagorized viewing
+// prompts for catagorized viewing with lists
 const selectManager = () => db.getList(`SELECT first_name ||' '|| last_name AS name
 FROM employees;`).then((choicesArray)=>
 [
 	{
 		name: 'name',
 		message: 'Manager:',
+		type: 'list',
+		choices: choicesArray
+	}
+])
+const selectEmployee = () => db.getList(`SELECT first_name ||' '|| last_name AS name
+FROM employees;`).then((choicesArray)=>
+[
+	{
+		name: 'name',
+		message: 'Employee:',
 		type: 'list',
 		choices: choicesArray
 	}
@@ -149,9 +160,18 @@ const selectDepartment = () => db.getList(`SELECT name FROM departments`).then((
 		choices: choicesArray
 	}
 ])
+const selectRole = () => db.getList(`SELECT title AS name FROM roles`).then((choicesArray)=>
+[
+	{
+		name: 'name',
+		message: 'Role:',
+		type: 'list',
+		choices: choicesArray
+	}
+])
 
 
 
 
-module.exports = { startingPoint, addDepartment, addRole, addEmployee, updateRole, updateManager, selectManager, selectDepartment }
+module.exports = { startingPoint, addDepartment, addRole, addEmployee, updateRole, updateManager, selectManager, selectDepartment, selectRole, selectEmployee }
 // , , addRole, updateRole

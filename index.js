@@ -126,6 +126,7 @@ async function chooseAction(choice) {
                 break;
             case 'Update employee role':
                 try {
+                    // ! something wrong here, not actually updating
                     const questions = await updateRole()
                     const update = await inquirer.prompt(questions) 
                     const roleId = await db.getIdByName(`SELECT id FROM roles WHERE title = $1`, update.role)

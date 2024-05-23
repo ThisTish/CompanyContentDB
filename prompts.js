@@ -83,7 +83,7 @@ const addEmployee = async () => {
 	},
 	{
 	name: 'role',
-	message: "Employee's role Id:",
+	message: "Employee's role:",
 	type: 'list',
 	choices: rolesArray
 	},
@@ -124,7 +124,7 @@ FROM employees;`).then((choicesArray)=>[
 	},
 	{
 		name:'manager',
-		message: "Employee's role:",
+		message: "Employee's manager:",
 		type: 'list',
 		choices: choicesArray
 	}

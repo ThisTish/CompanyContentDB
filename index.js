@@ -126,12 +126,11 @@ async function chooseAction(choice) {
                 break;
             case 'Update employee role':
                 try {
-                    // ! something wrong here, not actually updating
                     const questions = await updateRole()
                     const update = await inquirer.prompt(questions) 
                     const roleId = await db.getIdByName(`SELECT id FROM roles WHERE title = $1`, update.role)
-                    const employeeId = await db.getIdByName(`SELECT id FROM employees WHERE first_name || ' ' || last_name = $1;`, update.name)
-                    await db.makeQuery(`UPDATE employees SET role_id = $2 WHERE first_name ||' '|| last_name = $1;`, [employeeId.id, roleId.id])
+                    const employeeId = await db.getIdByName(`SELECT id FROM employees WHERE first_name ||' '|| last_name = $1;`, update.name)
+                    await db.makeQuery(`UPDATE employees SET role_id = $2 WHERE id = $1;`, [employeeId.id, roleId.id])
                     console.log(`Success! ${update.name} updated with the new role of ${update.role}`)
                 } catch (error) {
                     console.error('Error updating employee role:', error);

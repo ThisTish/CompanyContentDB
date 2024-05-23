@@ -94,10 +94,9 @@ async function chooseAction(choice) {
             break;
             case 'Add a department':
                 try {
-                    inquirer.prompt(addDepartment).then((dep) => 
-                        db.makeQuery(`INSERT INTO departments(name) VALUES ($1);`, [dep.department])
-                    )
-                    // .then((dep) => console.log(`Success! ${dep.department} added.`))
+                    const dep = await inquirer.prompt(addDepartment)
+                    await db.makeQuery(`INSERT INTO departments(name) VALUES ($1);`, [dep.department])
+                    console.log(`Success! ${dep.department} added.`)
                 } catch (error) {
                     console.error('Error adding department:', error);
                 }
@@ -161,8 +160,6 @@ async function chooseAction(choice) {
                     INNER JOIN departments AS d ON r.department_id = d.id
                     WHERE d.id = $1 GROUP BY d.name;`, [departmentRoleId.id])
                     const budget = new SelectTable(selectedSum.rows, [17]);
-                    console.log(selectedSum)
-                    console.log(budget)
                     budget.createTable();
                     
                 } catch (error) {

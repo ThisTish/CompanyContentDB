@@ -41,7 +41,7 @@ UPDATE employees SET manager_id = 1 WHERE role_id = 3;
 
 -- view employees by manager
 SELECT e.first_name ||' '|| e.last_name AS Employee
-FROM employees
+FROM employees AS e
 WHERE manager_id = 1;
 
 -- -- view employees by department

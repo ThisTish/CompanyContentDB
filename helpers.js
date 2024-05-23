@@ -16,16 +16,13 @@ class CompanyDB{
 	async getList(sql){
 		try{
 			const choices =  await this.makeQuery(sql)
-			console.log(choices.rows)
 			const choicesArray = choices.rows.map(row => row.name)
-			console.log(choicesArray)
 			return choicesArray
 		}catch (error) {
-		console.log(`error in getting list:`, error)
+		console.log(`Error in getting list:`, error)
 		}
 	} 
 	async getIdByName(sql, input){
-		console.log(input)
 		try {
 			const id = await this.makeQuery(sql, [input])
 			if(id.rows.length > 0){
